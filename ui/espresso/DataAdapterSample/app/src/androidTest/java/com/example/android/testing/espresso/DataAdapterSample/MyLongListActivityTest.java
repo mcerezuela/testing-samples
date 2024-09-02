@@ -19,10 +19,12 @@ import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
@@ -30,9 +32,16 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+import static androidx.test.espresso.Espresso.onData;
+import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
+import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 
@@ -71,7 +80,7 @@ public class MyLongListActivityTest {
     @Test
     public void lastItem_NotDisplayed() {
         // Last item should not exist if the list wasn't scrolled down.
-        Espresso.onView(ViewMatchers.withText(LAST_ITEM_ID)).check(ViewAssertions.doesNotExist());
+        onView(ViewMatchers.withText(LAST_ITEM_ID)).check(ViewAssertions.doesNotExist());
     }
 
     /**
@@ -91,7 +100,7 @@ public class MyLongListActivityTest {
         onRow(TEXT_ITEM_30).onChildView(ViewMatchers.withId(R.id.rowContentTextView)).perform(ViewActions.click());
 
         // Check that the activity detected the click on the first column.
-        Espresso.onView(ViewMatchers.withId(R.id.selection_row_value))
+        onView(ViewMatchers.withId(R.id.selection_row_value))
                 .check(ViewAssertions.matches(ViewMatchers.withText(TEXT_ITEM_30_SELECTED)));
     }
 
@@ -119,7 +128,7 @@ public class MyLongListActivityTest {
         onRow(TEXT_ITEM_60).onChildView(ViewMatchers.withId(R.id.rowToggleButton)).perform(ViewActions.click());
 
         // Check that the activity didn't detect the click on the first column.
-        Espresso.onView(ViewMatchers.withId(R.id.selection_row_value))
+        onView(ViewMatchers.withId(R.id.selection_row_value))
                 .check(ViewAssertions.matches(ViewMatchers.withText(TEXT_ITEM_30_SELECTED)));
     }
 
@@ -134,6 +143,6 @@ public class MyLongListActivityTest {
      * @return a {@link DataInteraction} referencing the row
      */
     private static DataInteraction onRow(String str) {
-        return Espresso.onData(Matchers.hasEntry(Matchers.equalTo(LongListActivity.ROW_TEXT), Matchers.is(str)));
+        return onData(Matchers.hasEntry(Matchers.equalTo(LongListActivity.ROW_TEXT), Matchers.is(str)));
     }
 }
