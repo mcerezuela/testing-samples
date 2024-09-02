@@ -49,6 +49,7 @@ import org.junit.runner.RunWith;
 public class RecyclerViewSampleTest {
 
     private static final int ITEM_BELOW_THE_FOLD = 40;
+    private static final String displayedText = "This is element #"+ ITEM_BELOW_THE_FOLD;
 
     /**
      * Use {@link ActivityScenario} to create and launch the activity under test. This is a
@@ -90,6 +91,14 @@ public class RecyclerViewSampleTest {
         String middleElementText =
                 getApplicationContext().getResources().getString(R.string.middle);
         onView(withText(middleElementText)).check(matches(isDisplayed()));
+    }
+    @Test
+    public void scrollToItem_checkItsText() {
+        onView(ViewMatchers.withId(R.id.recyclerView))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(ITEM_BELOW_THE_FOLD, click()));
+
+        onView(withText(displayedText))
+                .check(matches(isDisplayed()));
     }
 
     /**
