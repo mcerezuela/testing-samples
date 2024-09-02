@@ -44,7 +44,8 @@ public class MainActivity extends Activity {
 
         List<String> dataSet = new ArrayList<>(DATASET_COUNT);
         for (int i = 0; i < DATASET_COUNT; i++) {
-            dataSet.add(getString(R.string.item_element_text) + i);
+            int counter = i+1;
+            dataSet.add(getString(R.string.item_element_text) + counter);
         }
         CustomAdapter adapter = new CustomAdapter(dataSet, getApplicationContext());
         recyclerView.setAdapter(adapter);
